@@ -1,4 +1,3 @@
-
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -23,9 +22,9 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 NEW_APPS = [
-    'bonus',
-    'rest_framework',
-    'drf_spectacular',   
+    "bonus",
+    "rest_framework",
+    "drf_spectacular",
 ]
 
 DEFAULT_APPS = [
@@ -128,7 +127,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         # 'rest_framework.authentication.BasicAuthentication',
@@ -143,10 +142,10 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'KDL API',
-    'DESCRIPTION': 'API для работы с глоссариями и медицинскими данными',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "KDL API",
+    "DESCRIPTION": "API для работы с глоссариями и медицинскими данными",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 # Тут нужно добавить конкретные домены при выкате на прод

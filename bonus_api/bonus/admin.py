@@ -26,17 +26,21 @@ class BonusRuleAdminForm(forms.ModelForm):
         condition_value = cleaned_data.get("condition_value")
         operation_type = cleaned_data.get("operation_type")
         operation_value = cleaned_data.get("operation_value")
-        
+
         if operation_type == "percent_add" and "value" not in operation_value:
-            raise forms.ValidationError("Для percent_add нужно указать 'value' в operation_value")
+            raise forms.ValidationError(
+                "Для percent_add нужно указать 'value' в operation_value"
+            )
 
         if condition_type == "customer_status":
             if "status" not in condition_value:
-                raise forms.ValidationError("Для customer_status нужно указать {'status': 'vip'}")
+                raise forms.ValidationError(
+                    "Для customer_status нужно указать {'status': 'vip'}"
+                )
 
         return cleaned_data
-    
-    
+
+
 @admin.register(BonusRule)
 class BonusRuleAdmin(admin.ModelAdmin):
     form = BonusRuleAdminForm

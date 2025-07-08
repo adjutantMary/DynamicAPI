@@ -6,12 +6,12 @@ class BonusCalculationInputSerializer(serializers.Serializer):
     timestamp = serializers.DateTimeField()
     customer_status = serializers.ChoiceField(choices=["regular", "vip"])
 
+
 class AppliedRuleSerializer(serializers.Serializer):
     rule = serializers.CharField()
     bonus = serializers.DecimalField(max_digits=10, decimal_places=2)
 
+
 class BonusCalculationResultSerializer(serializers.Serializer):
     total_bonus = serializers.DecimalField(max_digits=10, decimal_places=2)
     applied_rules = AppliedRuleSerializer(many=True)
-
-

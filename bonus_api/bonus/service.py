@@ -5,6 +5,8 @@ import holidays
 
 
 class RuleEngine:
+    """Основная логика расчета и подбора правил"""
+
     def __init__(self, amount, timestamp, customer_status):
         self.amount = Decimal(amount)
         self.timestamp = timestamp
@@ -13,7 +15,7 @@ class RuleEngine:
         self.current_bonus = Decimal("0.00")
 
     def calculate(self):
-        rules = BonusRule.objects.filter(is_active=True).order_by('priority')
+        rules = BonusRule.objects.filter(is_active=True).order_by("priority")
 
         for rule in rules:
             if not self._check_condition(rule):
@@ -23,14 +25,18 @@ class RuleEngine:
             self._apply_operation(rule)
             bonus_added = self.current_bonus - bonus_before
 
-            self.applied_rules.append({
-                "rule": rule.code,
-                "bonus": bonus_added.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-            })
+            self.applied_rules.append(
+                {
+                    "rule": rule.code,
+                    "bonus": bonus_added.quantize(
+                        Decimal("0.01"), rounding=ROUND_HALF_UP
+                    ),
+                }
+            )
 
         return (
             self.current_bonus.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP),
-            self.applied_rules
+            self.applied_rules,
         )
 
     def _check_condition(self, rule: BonusRule):
@@ -41,7 +47,7 @@ class RuleEngine:
             return True
 
         if cond_type == RuleConditionType.IS_WEEKEND_OR_HOLIDAY:
-            is_weekend = self.timestamp.weekday() >= 5  # 5=Saturday, 6=Sunday
+            is_weekend = self.timestamp.weekday() >= 5
             is_holiday = self._is_holiday(self.timestamp.date())
             return is_weekend or is_holiday
 
