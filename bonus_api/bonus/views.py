@@ -5,7 +5,7 @@ from .serializers import (
     BonusCalculationInputSerializer,
     BonusCalculationResultSerializer,
 )
-from .service import RuleEngine  # ты реализуешь это отдельно
+from .service import RuleEngine
 
 
 class CalculateBonusView(APIView):
