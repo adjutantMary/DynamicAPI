@@ -78,6 +78,10 @@ POST /api/calculate-bonus/
 
 - bonus/models.py — правила расчёта
 - bonus/views.py — API
-- bonus/engine.py — движок применения правил (RuleEngine)
+- bonus/factory.py — движок создания правил (RuleFactory)
 - bonus/serializers.py — валидация входа и формирование ответа
 - bonus/admin.py — удобное редактирование правил
+- core/ - engine по интерфейсам
+- rules/ - основная логика создания правил
+- service/ - логика обработки бонусов
+  
