@@ -169,7 +169,7 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "INFO", 
+        "level": "INFO",
     },
     "loggers": {
         "bonus_api.core": {
@@ -179,5 +179,3 @@ LOGGING = {
         },
     },
 }
-
-

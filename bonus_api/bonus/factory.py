@@ -1,25 +1,60 @@
 from bonus.models import BonusRule
 from core.base import BaseBonusRule
-from rules.base_rate import BaseRateRule
-from rules.holiday_bonus import WeekendRule
-from rules.vip_boost import VIPRule
+from rules.conditions import (
+    AlwaysCondition,
+    WeekendOrHolidayCondition,
+    CustomerStatusCondition,
+)
+from rules.operations import (
+    BaseBonusOperation,
+    MultiplyOperation,
+    PercentAddOperation,
+)
+from rules.dynamic import DynamicRule
 
+
+CONDITION_CLASSES = {
+    "always": AlwaysCondition,
+    "is_weekend_or_holiday": WeekendOrHolidayCondition,
+    "customer_status": CustomerStatusCondition,
+}
+
+OPERATION_CLASSES = {
+    "base": BaseBonusOperation,
+    "multiply": MultiplyOperation,
+    "percent_add": PercentAddOperation,
+}
 
 
 class RuleFactory:
+    
+    """
+    Имеет один статический метод: create
+    
+    Метод create:
+    Создаёт новое правило бонуса на основе заданной модели rule_model
+    Возвращает экземпляр DynamicRule с заданным кодом, условием и операцией
+    Вызывает ошибку, если тип условия или операции не поддерживается
+    """
+    
     @staticmethod
-    def create(rule_model: BonusRule) -> BaseBonusRule:
-        condition = rule_model.condition_type
-        operation = rule_model.operation_type
-        op_val = rule_model.operation_value or {}
+    def create(rule_model) -> BaseBonusRule:
+        condition_type = rule_model.condition_type
+        operation_type = rule_model.operation_type
 
-        if condition == "always" and operation == "base":
-            return BaseRateRule(**op_val)
+        cond_class = CONDITION_CLASSES.get(condition_type)
+        op_class = OPERATION_CLASSES.get(operation_type)
 
-        if condition == "is_weekend_or_holiday" and operation == "multiply":
-            return WeekendRule(**op_val)
+        if not cond_class or not op_class:
+            raise NotImplementedError(
+                f"Unsupported rule type: {condition_type} + {operation_type}"
+            )
 
-        if condition == "customer_status" and operation == "percent_add":
-            return VIPRule(**op_val)
+        condition = cond_class(rule_model.condition_value or {})
+        operation = op_class(rule_model.operation_value or {})
 
-        raise NotImplementedError(f"No rule mapped for {condition} + {operation}")
+        return DynamicRule(
+            code=rule_model.code,
+            condition=condition,
+            operation=operation,
+        )

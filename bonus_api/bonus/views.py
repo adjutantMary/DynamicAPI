@@ -1,11 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import (
-    BonusCalculationInputSerializer
-)
+from .serializers import BonusCalculationInputSerializer
 
 from service.rule_calculator import calculate_bonus
+
 
 class CalculateBonusView(APIView):
     def post(self, request):
@@ -20,9 +19,6 @@ class CalculateBonusView(APIView):
             status=data["customer_status"],
         )
 
-        response = {
-            "total_bonus": total_bonus,
-            "applied_rules": applied_rules
-        }
+        response = {"total_bonus": total_bonus, "applied_rules": applied_rules}
 
         return Response(response)
