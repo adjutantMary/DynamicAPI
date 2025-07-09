@@ -10,5 +10,3 @@ class BaseBonusRule(ABC):
     @abstractmethod
     def apply(self, ctx: BonusCalculationContext) -> None:
         pass
-
-

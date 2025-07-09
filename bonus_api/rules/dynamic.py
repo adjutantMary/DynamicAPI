@@ -1,5 +1,5 @@
-
 from core.base import BaseBonusRule
+
 
 class DynamicRule(BaseBonusRule):
     def __init__(self, code, condition, operation):

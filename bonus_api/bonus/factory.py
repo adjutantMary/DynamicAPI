@@ -27,16 +27,15 @@ OPERATION_CLASSES = {
 
 
 class RuleFactory:
-    
     """
     Имеет один статический метод: create
-    
+
     Метод create:
     Создаёт новое правило бонуса на основе заданной модели rule_model
     Возвращает экземпляр DynamicRule с заданным кодом, условием и операцией
     Вызывает ошибку, если тип условия или операции не поддерживается
     """
-    
+
     @staticmethod
     def create(rule_model) -> BaseBonusRule:
         condition_type = rule_model.condition_type
