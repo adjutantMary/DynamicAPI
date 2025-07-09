@@ -1,8 +1,8 @@
 from bonus.models import BonusRule
-from bonus_api.core.base import BaseBonusRule
-from bonus_api.rules.base_rate import BaseRateRule
-from bonus_api.rules.holiday_bonus import WeekendRule
-from bonus_api.rules.vip_boost import VIPRule
+from core.base import BaseBonusRule
+from rules.base_rate import BaseRateRule
+from rules.holiday_bonus import WeekendRule
+from rules.vip_boost import VIPRule
 
 
 

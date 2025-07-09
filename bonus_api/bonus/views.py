@@ -5,7 +5,7 @@ from .serializers import (
     BonusCalculationInputSerializer
 )
 
-from bonus_api.service.rule_calculator import calculate_bonus
+from service.rule_calculator import calculate_bonus
 
 class CalculateBonusView(APIView):
     def post(self, request):
