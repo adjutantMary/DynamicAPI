@@ -2,11 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (
-    BonusCalculationInputSerializer,
-    BonusCalculationResultSerializer,
+    BonusCalculationInputSerializer
 )
-from .service import RuleEngine
 
+from bonus_api.service.rule_calculator import calculate_bonus
 
 class CalculateBonusView(APIView):
     def post(self, request):
@@ -15,16 +14,15 @@ class CalculateBonusView(APIView):
 
         data = serializer.validated_data
 
-        engine = RuleEngine(
+        total_bonus, applied_rules = calculate_bonus(
             amount=data["transaction_amount"],
             timestamp=data["timestamp"],
-            customer_status=data["customer_status"],
+            status=data["customer_status"],
         )
 
-        total_bonus, applied_rules = engine.calculate()
+        response = {
+            "total_bonus": total_bonus,
+            "applied_rules": applied_rules
+        }
 
-        result = BonusCalculationResultSerializer(
-            {"total_bonus": total_bonus, "applied_rules": applied_rules}
-        )
-
-        return Response(result.data, status=status.HTTP_200_OK)
+        return Response(response)
