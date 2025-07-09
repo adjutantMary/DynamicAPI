@@ -38,3 +38,16 @@ class BonusRule(models.Model):
 
     def __str__(self):
         return f"{self.code} ({self.condition_type} → {self.operation_type})"
+    
+    
+class BonusLog(models.Model):
+    rule_code = models.CharField(max_length=100)
+    bonus_delta = models.DecimalField(max_digits=10, decimal_places=2)
+    total_bonus = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"[{self.created_at}] {self.rule_code}: +{self.bonus_delta} → {self.total_bonus}"
+
+    class Meta:
+        ordering = ["-created_at"]

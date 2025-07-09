@@ -151,3 +151,33 @@ SPECTACULAR_SETTINGS = {
 # Тут нужно добавить конкретные домены при выкате на прод
 # Подойдет для локальной разработки
 CORS_ALLOWED_ORIGINS = ["*"]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "[{levelname}] {asctime} {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO", 
+    },
+    "loggers": {
+        "bonus_api.core": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
+
+

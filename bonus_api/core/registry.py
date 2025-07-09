@@ -1,7 +1,10 @@
 from .context import BonusCalculationContext
 from .base import BaseBonusRule
+from bonus.models import BonusLog
 
+import logging
 
+logger = logging.getLogger(__name__)
 
 class BonusRuleRegistry:
     def __init__(self, rules: list[BaseBonusRule]):
@@ -22,10 +25,24 @@ class BonusRuleRegistry:
         """
 
         applied = []
+
+        logger.info("Регистрация правил")
+
         for rule in self.rules:
             before = ctx.current_bonus
             rule.apply(ctx)
             delta = ctx.current_bonus - before
+
+            logger.debug(f"Правило: {rule.code} | {before} → {ctx.current_bonus} | ∆ = {delta}")
+
             if delta > 0:
                 applied.append({"rule": rule.code, "bonus": delta})
+
+            logger.info(f"Расчёт завершён. Бонус: {ctx.current_bonus}")
+            
+            BonusLog.objects.create(
+                rule_code=rule.code,
+                bonus_delta=delta,
+                total_bonus=ctx.current_bonus
+            )
         return applied
